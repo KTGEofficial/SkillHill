@@ -1,0 +1,73 @@
+import csv
+from PIL import Image, ImageDraw, ImageFont
+import os
+
+# Define the path to the CSV file and the image folder
+csv_file_path = "C:\\Users\\test\\Desktop\\New Folder\\SkillHillScore.csv"
+
+# This is for the standard leaderboard which was first used back in Skill Hill 1B
+
+image_folder_path = "C:\\Users\\test\\Desktop\\New Folder\\SkillHill\\Leaderboard"
+
+# Define the path to the custom font and the text size
+font_path = "C:\\Users\\test\\Desktop\\New Folder\\SkillHill\\Typefaces\\PixifyRegular.ttf"
+text_size = 50
+
+# Create the image folder if it doesn't exist
+os.makedirs(image_folder_path, exist_ok=True)
+
+# Define the image size
+image_size = (1920, 1080)
+
+# Define a function to generate images from the CSV data
+def generate_images_from_csv(csv_path, image_folder, font_path, text_size):
+    with open(csv_path, 'r') as file:
+        reader = csv.reader(file)
+        # Skip the header
+        next(reader)
+        # Initialize a counter for the image file names
+        image_counter = 1
+        # Initialize a list to store instances
+        instances = []
+        for row in reader:
+            # Add the instance to the list
+            instances.append(row)
+            # If we have 10 instances, create an image
+            if len(instances) == 10:
+                # Create a new image with a white background
+                image = Image.new('RGB', image_size, color='black')
+                # Get a drawing context
+                draw = ImageDraw.Draw(image)
+                # Load the custom font with the specified size
+                font = ImageFont.truetype(font_path, text_size)
+                # Define the starting position for drawing text
+                position = (50, 50)
+                # Draw each instance on the image
+                for instance in instances:
+                    # Please change the amount of spaces here depending on the font. You might also need to add spaces in the csv too. Here is an example of changing the csv to make it look better in the final product: EXAMPLE COMING LATER.
+                    text = '      '.join(instance)
+                    draw.text(position, text, fill='white', font=font)
+                    # Move to the next position
+                    position = (position[0], position[1] + 100)
+                # Save the image
+                image_path = os.path.join(image_folder, f'image_{image_counter}.png')
+                image.save(image_path)
+                # Increment the image counter
+                image_counter += 1
+                # Clear the instances list for the next image
+                instances = []
+        # If there are remaining instances after the loop, create an image for them
+        if instances:
+            image = Image.new('RGB', image_size, color='black')
+            draw = ImageDraw.Draw(image)
+            font = ImageFont.truetype(font_path, text_size)
+            position = (50, 50)
+            for instance in instances:
+                text = '      '.join(instance)
+                draw.text(position, text, fill='white', font=font)
+                position = (position[0], position[1] + 100)
+            image_path = os.path.join(image_folder, f'image_{image_counter}.png')
+            image.save(image_path)
+
+# Call the function to generate images with the custom font and text size
+generate_images_from_csv(csv_file_path, image_folder_path, font_path, text_size)
