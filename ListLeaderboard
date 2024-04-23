@@ -44,7 +44,10 @@ def generate_images_from_csv(csv_path, image_folder, font_path, text_size):
                 position = (50, 50)
                 # Draw each instance on the image
                 for instance in instances:
-                    # Please change the amount of spaces here depending on the font. You might also need to add spaces in the csv too. Here is an example of changing the csv to make it look better in the final product: EXAMPLE COMING LATER.
+                    # Please change the amount of spaces here depending on the font. 
+                    # You might also need to add spaces in the csv too.
+                    # Here is an example of changing the csv to make it look better in the final product:
+                    # https://github.com/KTGEofficial/SkillHill/blob/main/rounded_scores%20-%20Copy.csv look in the raw code of the csv.
                     text = '      '.join(instance)
                     draw.text(position, text, fill='white', font=font)
                     # Move to the next position
